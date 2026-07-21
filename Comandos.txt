@@ -1,0 +1,13 @@
+¿Qué cambió?
+git status
+
+¿En qué rama estoy?
+git branch
+
+¿Qué commits existen?
+git log --oneline
+
+
+Añadir commit:
+git add .
+git commit -m "chore: initialize project structure"
