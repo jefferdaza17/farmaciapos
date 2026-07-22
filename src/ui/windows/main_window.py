@@ -8,6 +8,9 @@ Archivo:
 Descripción:
     Ventana principal de la aplicación.
 
+Autor:
+    Jefferson Castellanos
+
 =========================================================
 """
 from PySide6.QtCore import Qt
@@ -17,33 +20,54 @@ from PySide6.QtWidgets import (
     QVBoxLayout,
     QWidget,
 )
+from src.core.constants import APP_NAME, APP_VERSION
 
 class MainWindow(QMainWindow):
     """
     Ventana principal de FarmaciaPOS.
     """
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
         self._configure_window()
         self._create_ui()
 
+    # --------------------------------------------------
+    # Configuración
+    # --------------------------------------------------
     def _configure_window(self) -> None:
         """Configura la ventana principal."""
-        self.setWindowTitle("FarmaciaPOS")
+        self.setWindowTitle(APP_NAME)
         self.resize(1400, 900)
         self.setMinimumSize(1200, 700)
 
+    # --------------------------------------------------
+    # UI
+    # --------------------------------------------------
     def _create_ui(self) -> None:
-        """Construye la interfaz principal."""
-        central_widget = QWidget()
-        self.setCentralWidget(central_widget)
-        layout = QVBoxLayout()
-        layout.setContentsMargins(30, 30, 30, 30)
-        layout.setSpacing(20)
-        central_widget.setLayout(layout)
-        title = QLabel("Bienvenido a FarmaciaPOS")
-        title.setAlignment(Qt.AlignCenter)
-        title.setObjectName("title")
-        layout.addStretch()
-        layout.addWidget(title)
-        layout.addStretch()
+        self._central_widget = QWidget()
+        self.setCentralWidget(self._central_widget)
+        self._main_layout = QVBoxLayout()
+        self._main_layout.setContentsMargins(40, 40, 40, 40)
+        self._main_layout.setSpacing(20)
+        self._central_widget.setLayout(self._main_layout)
+        self._create_placeholder()
+
+    def _create_placeholder(self) -> None:
+        title = QLabel(APP_NAME)
+        title.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        title.setStyleSheet("""
+            font-size:32px;
+            font-weight:bold;
+        """)
+        subtitle = QLabel(
+            f"Versión {APP_VERSION}\n\nFramework Base Inicializado"
+        )
+        subtitle.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        subtitle.setStyleSheet("""
+            font-size:16px;
+            color:gray;
+        """)
+        self._main_layout.addStretch()
+        self._main_layout.addWidget(title)
+        self._main_layout.addWidget(subtitle)
+        self._main_layout.addStretch()
