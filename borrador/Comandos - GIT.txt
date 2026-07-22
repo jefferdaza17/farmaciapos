@@ -10,4 +10,5 @@ git log --oneline
 
 Añadir commit:
 git add .
-git commit -m "chore: initialize project structure"
+git commit -m "chore: bootstrap project structure"
+git push
