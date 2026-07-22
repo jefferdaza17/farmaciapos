@@ -1,17 +1,16 @@
 """
-=========================================================
-FarmaciaPOS
+===============================================================================
+Proyecto    : FarmaciaPOS
+Archivo     : main_window.py
+Módulo      : UI / Windows
+Descripción : Ventana principal de la aplicación.
 
-Archivo:
-    main_window.py
+Autor       : Jefferson Castellanos
+Creado      : 2026-07-21
+Python      : 3.13
 
-Descripción:
-    Ventana principal de la aplicación.
-
-Autor:
-    Jefferson Castellanos
-
-=========================================================
+Copyright (c) 2026
+===============================================================================
 """
 from PySide6.QtWidgets import QHBoxLayout, QMainWindow, QWidget
 from src.core.constants import APP_NAME
