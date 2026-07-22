@@ -3,55 +3,58 @@
 Proyecto    : FarmaciaPOS
 Archivo     : app_shell.py
 Módulo      : UI / Shell
-Descripción : Contenedor principal de la interfaz.
+Descripción : Contenedor principal de la aplicación.
 
 Autor       : Jefferson Castellanos
 Creado      : 2026-07-21
-Python      : 3.13
 ===============================================================================
 """
 
-from PySide6.QtWidgets import (
-    QHBoxLayout,
-    QVBoxLayout,
-    QWidget,
-)
+from PySide6.QtWidgets import QVBoxLayout
+from PySide6.QtWidgets import QWidget
 
-from src.ui.layout.content_area import ContentArea
-from src.ui.layout.sidebar import Sidebar
+from src.ui.shell.top_bar import TopBar
+from src.ui.shell.workspace import Workspace
 
 
 class AppShell(QWidget):
     """
-    Contenedor principal de la interfaz.
-
-    Organiza todos los elementos visibles de la aplicación.
+    Contenedor principal de la interfaz de usuario.
     """
 
     def __init__(self) -> None:
+        """
+        Inicializa el contenedor principal.
+        """
         super().__init__()
-        self._create_ui()
+        self._initialize_ui()
 
-    # -------------------------------------------------------------------------
-    # Construcción de la interfaz
-    # -------------------------------------------------------------------------
+    @property
+    def top_bar(self) -> TopBar:
+        """
+        Retorna la barra superior.
+        """
+        return self._top_bar
 
-    def _create_ui(self) -> None:
-        main_layout = QHBoxLayout(self)
+    @property
+    def workspace(self) -> Workspace:
+        """
+        Retorna el área de trabajo principal.
+        """
+        return self._workspace
+
+    def _initialize_ui(self) -> None:
+        """
+        Construye la interfaz principal.
+        """
+        self._top_bar = TopBar()
+        self._workspace = Workspace()
+
+        main_layout = QVBoxLayout(self)
         main_layout.setContentsMargins(0, 0, 0, 0)
         main_layout.setSpacing(0)
 
-        self._sidebar = Sidebar()
+        main_layout.addWidget(self._top_bar)
+        main_layout.addWidget(self._workspace, 1)
 
-        right_container = QWidget()
-
-        right_layout = QVBoxLayout(right_container)
-        right_layout.setContentsMargins(0, 0, 0, 0)
-        right_layout.setSpacing(0)
-
-        self._content_area = ContentArea()
-
-        right_layout.addWidget(self._content_area)
-
-        main_layout.addWidget(self._sidebar)
-        main_layout.addWidget(right_container, 1)
+        self.setLayout(main_layout)

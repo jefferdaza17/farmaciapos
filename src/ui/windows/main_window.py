@@ -7,13 +7,12 @@ Descripción : Ventana principal de la aplicación.
 
 Autor       : Jefferson Castellanos
 Creado      : 2026-07-21
-Python      : 3.13
 ===============================================================================
 """
 
+from PySide6.QtCore import Qt
+from PySide6.QtGui import QCloseEvent
 from PySide6.QtWidgets import QMainWindow
-
-from src.core.constants import APP_NAME
 from src.ui.shell.app_shell import AppShell
 
 
@@ -23,22 +22,38 @@ class MainWindow(QMainWindow):
     """
 
     def __init__(self) -> None:
+        """
+        Inicializa la ventana principal.
+        """
         super().__init__()
-        self._configure_window()
-        self._create_ui()
+        self._initialize_window()
+        self._initialize_ui()
 
-    # -------------------------------------------------------------------------
-    # Configuración
-    # -------------------------------------------------------------------------
-
-    def _configure_window(self) -> None:
-        self.setWindowTitle(APP_NAME)
-        self.resize(1400, 900)
+    def _initialize_window(self) -> None:
+        """
+        Configura las propiedades generales de la ventana.
+        """
+        self.setWindowTitle("FarmaciaPOS")
+        self.resize(1440, 900)
         self.setMinimumSize(1200, 700)
+        self.setWindowState(Qt.WindowMaximized)
 
-    # -------------------------------------------------------------------------
-    # Construcción de la interfaz
-    # -------------------------------------------------------------------------
+    def _initialize_ui(self) -> None:
+        """
+        Construye la interfaz principal.
+        """
+        self._app_shell = AppShell()
+        self.setCentralWidget(self._app_shell)
 
-    def _create_ui(self) -> None:
-        self.setCentralWidget(AppShell())
+    @property
+    def app_shell(self) -> AppShell:
+        """
+        Retorna el contenedor principal de la aplicación.
+        """
+        return self._app_shell
+
+    def closeEvent(self, event: QCloseEvent) -> None:
+        """
+        Evento ejecutado antes de cerrar la aplicación.
+        """
+        event.accept()
