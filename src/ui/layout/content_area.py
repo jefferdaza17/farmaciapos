@@ -1,32 +1,42 @@
-from PySide6.QtCore import Qt
-from PySide6.QtWidgets import QLabel, QVBoxLayout, QWidget
-from src.core.constants import APP_VERSION
+"""
+===============================================================================
+Proyecto    : FarmaciaPOS
+Archivo     : content_area.py
+Módulo      : UI / Layout
+Descripción : Área principal de contenido.
+
+Autor       : Jefferson Castellanos
+Creado      : 2026-07-22
+Python      : 3.13
+===============================================================================
+"""
+from PySide6.QtWidgets import QStackedWidget, QVBoxLayout, QWidget
+from src.modules.dashboard.page import DashboardPage
 
 
 class ContentArea(QWidget):
-    """Área principal donde se mostrarán los módulos."""
+    """
+    Área principal donde se muestran los módulos de la aplicación.
+    """
 
     def __init__(self) -> None:
         super().__init__()
-        self._setup_ui()
+        self._create_ui()
 
-    def _setup_ui(self) -> None:
+    # -------------------------------------------------------------------------
+    # Construcción de la interfaz
+    # -------------------------------------------------------------------------
+
+    def _create_ui(self) -> None:
         self.setObjectName("contentArea")
 
         layout = QVBoxLayout(self)
-        layout.setContentsMargins(40, 40, 40, 40)
+        layout.setContentsMargins(0, 0, 0, 0)
 
-        title = QLabel("Bienvenido a FarmaciaPOS")
-        title.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        title.setObjectName("pageTitle")
+        self._stack = QStackedWidget()
 
-        subtitle = QLabel(
-            f"Versión {APP_VERSION}\n\nFramework Base Inicializado"
-        )
-        subtitle.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        subtitle.setObjectName("pageSubtitle")
+        self._dashboard = DashboardPage()
 
-        layout.addStretch()
-        layout.addWidget(title)
-        layout.addWidget(subtitle)
-        layout.addStretch()
+        self._stack.addWidget(self._dashboard)
+
+        layout.addWidget(self._stack)
