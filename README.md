@@ -1,13 +1,12 @@
 # FarmaciaPOS
 
-Sistema POS desarrollado en Python.
+Sistema moderno de administración de farmacias desarrollado en Python y PySide6.
 
-## Tecnologías
+## Requisitos
 
-- Python
-- PySide6
-- OpenPyXL
+- Python 3.13
 
-## Estado
+## Instalación
 
-En desarrollo.
+```bash
+pip install -e .[dev]

@@ -1,0 +1,29 @@
+[project]
+name = "farmaciapos"
+version = "0.1.0"
+description = "Sistema moderno de gestión de farmacias"
+requires-python = ">=3.13"
+
+dependencies = [
+    "PySide6>=6.9",
+    "pandas>=2.2",
+    "openpyxl>=3.1",
+    "pyarrow",
+]
+
+[project.optional-dependencies]
+dev = [
+    "black",
+    "ruff",
+    "isort",
+    "pytest",
+]
+
+[tool.black]
+line-length = 88
+
+[tool.isort]
+profile = "black"
+
+[tool.ruff]
+line-length = 88

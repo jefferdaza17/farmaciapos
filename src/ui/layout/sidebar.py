@@ -16,6 +16,7 @@ from PySide6.QtWidgets import QLabel, QVBoxLayout, QWidget
 
 from src.core.constants import APP_NAME
 from src.ui.components.navigation_button import NavigationButton
+from src.core.icons import Icons
 
 
 class Sidebar(QWidget):
@@ -64,17 +65,16 @@ class Sidebar(QWidget):
         Construye el menú principal.
         """
         buttons = [
-            "🏠 Dashboard",
-            "💊 Productos",
-            "🛒 Ventas",
-            "📦 Inventario",
-            "👥 Clientes",
-            "🚚 Proveedores",
-            "💰 Caja",
-            "📈 Reportes",
+            ("Dashboard", Icons.home()),
+            ("Productos", Icons.products()),
+            ("Ventas", Icons.sales()),
+            ("Inventario", Icons.inventory()),
+            ("Clientes", Icons.customers()),
+            ("Proveedores", Icons.suppliers()),
+            ("Reportes", Icons.reports()),
         ]
 
-        for index, text in enumerate(buttons):
-            button = NavigationButton(text)
+        for index, (text, icon) in enumerate(buttons):
+            button = NavigationButton(text, icon)
             button.setChecked(index == 0)
             layout.addWidget(button)
