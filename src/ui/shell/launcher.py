@@ -25,11 +25,7 @@ class Launcher(QFrame):
     Panel lateral encargado de mostrar los módulos registrados.
     """
 
-    def __init__(
-        self,
-        registry: WorkspaceRegistry,
-        router: Router
-    ) -> None:
+    def __init__(self, registry: WorkspaceRegistry, router: Router) -> None:
         """
         Inicializa el Launcher.
         """
@@ -67,10 +63,9 @@ class Launcher(QFrame):
         Construye la interfaz.
         """
         self.setObjectName("launcher")
-        self.setFixedWidth(220)
+        self.setFixedWidth(84)
 
-        self.setStyleSheet(
-            f"""
+        self.setStyleSheet(f"""
             QFrame#launcher {{
                 background-color: {ThemeManager.SURFACE_COLOR};
                 border-right: 1px solid {ThemeManager.BORDER_COLOR};
@@ -79,11 +74,11 @@ class Launcher(QFrame):
             QPushButton {{
                 background-color: transparent;
                 color: {ThemeManager.TEXT_PRIMARY};
-                text-align: left;
-                padding: 12px 16px;
+                text-align: center;
+                padding: 12px 4px;
                 border: none;
-                border-radius: {ThemeManager.BORDER_RADIUS}px;
-                font-size: 14px;
+                border-radius: 8px;
+                font-size: 21px;
             }}
 
             QPushButton:hover {{
@@ -95,8 +90,12 @@ class Launcher(QFrame):
                 background-color: {ThemeManager.PRIMARY_DARK};
                 color: white;
             }}
-            """
-        )
+
+            QPushButton:checked {{
+                background-color: {ThemeManager.PRIMARY_COLOR};
+                color: white;
+            }}
+            """)
 
         self._layout = QVBoxLayout(self)
         self._layout.setContentsMargins(12, 16, 12, 16)
@@ -111,10 +110,23 @@ class Launcher(QFrame):
         """
         for module in self._registry.all():
 
-            button = QPushButton(module.title)
+            icons = {
+                "home": "▦",
+                "inventory": "▣",
+                "sales": "🛒",
+                "clients": "♟",
+                "suppliers": "▤",
+                "purchases": "▧",
+                "reports": "▥",
+            }
+            button = QPushButton(icons.get(module.id, "•"))
+            button.setToolTip(module.title)
+            button.setAccessibleName(module.title)
             button.setCursor(Qt.CursorShape.PointingHandCursor)
+            button.setCheckable(True)
+            button.setChecked(module.id == "home")
             button.clicked.connect(
-                lambda _, module_id=module.id: self._router.navigate(module_id)
+                lambda _, module_id=module.id: self._navigate(module_id)
             )
 
             self._layout.addWidget(button)
@@ -122,3 +134,9 @@ class Launcher(QFrame):
             self._buttons[module.id] = button
 
         self._layout.addStretch()
+
+    def _navigate(self, module_id: str) -> None:
+        """Navega y actualiza el estado visual del botón seleccionado."""
+        self._router.navigate(module_id)
+        for button_id, button in self._buttons.items():
+            button.setChecked(button_id == module_id)

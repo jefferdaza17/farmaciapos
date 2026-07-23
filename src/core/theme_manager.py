@@ -22,20 +22,23 @@ class ThemeManager:
     # Colores principales
     PRIMARY_COLOR = "#2563EB"
     PRIMARY_DARK = "#1D4ED8"
-    SUCCESS_COLOR = "#16A34A"
-    WARNING_COLOR = "#D97706"
-    ERROR_COLOR = "#DC2626"
+    SUCCESS_COLOR = "#22C55E"
+    WARNING_COLOR = "#F59E0B"
+    ERROR_COLOR = "#EF4444"
+    INFO_COLOR = "#06B6D4"
+    PURPLE_COLOR = "#8B5CF6"
 
     # Escala de grises
     BACKGROUND_COLOR = "#F5F7FA"
     SURFACE_COLOR = "#FFFFFF"
-    BORDER_COLOR = "#D9DEE7"
+    BORDER_COLOR = "#E5E7EB"
 
-    TEXT_PRIMARY = "#1F2937"
-    TEXT_SECONDARY = "#6B7280"
+    TEXT_PRIMARY = "#0F172A"
+    TEXT_SECONDARY = "#64748B"
+    TEXT_DISABLED = "#94A3B8"
 
     # Tipografía
-    FONT_FAMILY = "Segoe UI"
+    FONT_FAMILY = "Inter, Segoe UI, Arial"
     FONT_SIZE_SMALL = 12
     FONT_SIZE_NORMAL = 13
     FONT_SIZE_LARGE = 16
@@ -87,8 +90,8 @@ class ThemeManager:
             background-color: {cls.PRIMARY_COLOR};
             color: white;
             border: none;
-            border-radius: {cls.BORDER_RADIUS}px;
-            padding: 8px 16px;
+            border-radius: 6px;
+            padding: 9px 16px;
             font-weight: 600;
         }}
 
@@ -108,6 +111,37 @@ class ThemeManager:
             border: 1px solid {cls.BORDER_COLOR};
             border-radius: {cls.BORDER_RADIUS}px;
             padding: 6px;
+        }}
+
+        QLineEdit:focus, QComboBox:focus {{
+            border: 1px solid {cls.PRIMARY_COLOR};
+        }}
+
+        QTableWidget, QTableView {{
+            background: {cls.SURFACE_COLOR};
+            border: 1px solid {cls.BORDER_COLOR};
+            border-radius: 8px;
+            gridline-color: {cls.BORDER_COLOR};
+            alternate-background-color: #F8FAFC;
+        }}
+
+        QHeaderView::section {{
+            background: #F8FAFC;
+            color: {cls.TEXT_SECONDARY};
+            border: none;
+            border-bottom: 1px solid {cls.BORDER_COLOR};
+            padding: 10px;
+            font-weight: 700;
+        }}
+
+        QTableWidget::item, QTableView::item {{
+            padding: 8px;
+            border: none;
+        }}
+
+        QTableWidget::item:selected, QTableView::item:selected {{
+            background: #DBEAFE;
+            color: {cls.TEXT_PRIMARY};
         }}
         """
 

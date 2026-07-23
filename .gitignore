@@ -18,6 +18,9 @@ dist/
 # Logs
 logs/
 
+# Datos locales generados por la aplicación
+data/excel/*.xlsx
+
 # OS
 .DS_Store
 Thumbs.db
