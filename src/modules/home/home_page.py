@@ -32,7 +32,7 @@ class HomePage(QWidget):
         self._metrics["Ventas"].setText(f"${float(summary['Total vendido']):,.2f}")
 
     def _initialize_ui(self) -> None:
-        title = QLabel("¡Buenos días! 👋")
+        title = QLabel("Buenos días")
         title.setStyleSheet(
             f"font-size: 28px; font-weight: 700; color: {ThemeManager.TEXT_PRIMARY};"
         )
@@ -53,9 +53,10 @@ class HomePage(QWidget):
         )
         for position, (key, description, color) in enumerate(card_specs):
             card = QFrame()
+            card.setObjectName("metricCard")
             card.setStyleSheet(
-                f"background: {ThemeManager.SURFACE_COLOR}; "
-                f"border: 1px solid {ThemeManager.BORDER_COLOR}; border-radius: 12px;"
+                f"QFrame#metricCard {{ background: {ThemeManager.SURFACE_COLOR}; "
+                f"border: 1px solid {ThemeManager.BORDER_COLOR}; border-radius: 12px; }}"
             )
             card_layout = QVBoxLayout(card)
             card_layout.setContentsMargins(20, 18, 20, 18)
@@ -72,9 +73,10 @@ class HomePage(QWidget):
             metrics_layout.addWidget(card, position // 2, position % 2)
 
         activity = QFrame()
+        activity.setObjectName("activityCard")
         activity.setStyleSheet(
-            f"background: {ThemeManager.SURFACE_COLOR}; "
-            f"border: 1px solid {ThemeManager.BORDER_COLOR}; border-radius: 12px;"
+            f"QFrame#activityCard {{ background: {ThemeManager.SURFACE_COLOR}; "
+            f"border: 1px solid {ThemeManager.BORDER_COLOR}; border-radius: 12px; }}"
         )
         activity_layout = QVBoxLayout(activity)
         activity_layout.setContentsMargins(22, 20, 22, 20)

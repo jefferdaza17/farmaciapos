@@ -3,6 +3,7 @@
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import (
     QHBoxLayout,
+    QFrame,
     QLabel,
     QLineEdit,
     QMessageBox,
@@ -43,7 +44,14 @@ class SalesPage(QWidget):
         add_button = QPushButton("Agregar")
         add_button.clicked.connect(self._add_item)
 
-        product_bar = QHBoxLayout()
+        product_card = QFrame()
+        product_card.setObjectName("salesProductCard")
+        product_card.setStyleSheet(
+            f"QFrame#salesProductCard {{ background: white; "
+            f"border: 1px solid {ThemeManager.BORDER_COLOR}; border-radius: 10px; }}"
+        )
+        product_bar = QHBoxLayout(product_card)
+        product_bar.setContentsMargins(16, 12, 16, 12)
         product_bar.addWidget(self._code_input, 1)
         product_bar.addWidget(QLabel("Cantidad"))
         product_bar.addWidget(self._quantity_input)
@@ -58,14 +66,22 @@ class SalesPage(QWidget):
         self._table.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers)
         self._table.verticalHeader().setVisible(False)
 
-        self._total_label = QLabel("Total: $0.00")
-        self._total_label.setStyleSheet("font-size: 20px; font-weight: 700;")
+        self._total_label = QLabel("$0.00")
+        self._total_label.setStyleSheet(
+            f"font-size: 26px; font-weight: 700; color: {ThemeManager.PRIMARY_COLOR};"
+        )
+        total_caption = QLabel("Total de la venta")
+        total_caption.setStyleSheet(f"color: {ThemeManager.TEXT_SECONDARY};")
+        total_box = QVBoxLayout()
+        total_box.setSpacing(0)
+        total_box.addWidget(total_caption)
+        total_box.addWidget(self._total_label)
         remove_button = QPushButton("Quitar seleccionado")
         remove_button.clicked.connect(self._remove_selected)
         confirm_button = QPushButton("Confirmar venta")
         confirm_button.clicked.connect(self._confirm_sale)
         footer = QHBoxLayout()
-        footer.addWidget(self._total_label)
+        footer.addLayout(total_box)
         footer.addStretch()
         footer.addWidget(remove_button)
         footer.addWidget(confirm_button)
@@ -75,7 +91,7 @@ class SalesPage(QWidget):
         layout.setSpacing(12)
         layout.addWidget(title)
         layout.addWidget(subtitle)
-        layout.addLayout(product_bar)
+        layout.addWidget(product_card)
         layout.addWidget(self._table, 1)
         layout.addLayout(footer)
 
@@ -143,4 +159,4 @@ class SalesPage(QWidget):
                     )
                 self._table.setItem(row, column, table_item)
         total = sum(float(item["Subtotal"]) for item in self._items)
-        self._total_label.setText(f"Total: ${total:,.2f}")
+        self._total_label.setText(f"${total:,.2f}")

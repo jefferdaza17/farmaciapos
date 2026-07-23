@@ -3,6 +3,8 @@
 from PySide6.QtCore import QSortFilterProxyModel, Qt
 from PySide6.QtWidgets import (
     QHBoxLayout,
+    QFrame,
+    QGridLayout,
     QLabel,
     QLineEdit,
     QMessageBox,
@@ -34,14 +36,25 @@ class InventoryPage(QWidget):
 
     def refresh(self) -> None:
         """Recarga el inventario desde el almacenamiento local."""
-        self._model.set_medications(self._service.list_medications())
+        medications = self._service.list_medications()
+        self._model.set_medications(medications)
+        self._stock_total.setText(str(sum(int(item["Stock"]) for item in medications)))
+        self._low_stock.setText(
+            str(
+                sum(
+                    int(item["Stock"]) <= int(item["Stock mínimo"])
+                    for item in medications
+                )
+            )
+        )
+        self._products_total.setText(str(len(medications)))
 
     def _initialize_ui(self) -> None:
         title = QLabel("Inventario")
         title.setStyleSheet(
             f"font-size: {ThemeManager.FONT_SIZE_TITLE}px; font-weight: 700;"
         )
-        subtitle = QLabel("Consulta existencias y registra medicamentos.")
+        subtitle = QLabel("Controla productos, existencias y alertas de reposición.")
         subtitle.setStyleSheet(f"color: {ThemeManager.TEXT_SECONDARY};")
         self._search_input = QLineEdit()
         self._search_input.setPlaceholderText(
@@ -55,6 +68,41 @@ class InventoryPage(QWidget):
         toolbar.addWidget(self._search_input, 1)
         toolbar.addWidget(add_button)
 
+        stats = QGridLayout()
+        stats.setHorizontalSpacing(12)
+        self._stock_total = QLabel("0")
+        self._low_stock = QLabel("0")
+        self._products_total = QLabel("0")
+        for column, (label, value, color) in enumerate(
+            (
+                ("Stock total", self._stock_total, ThemeManager.PRIMARY_COLOR),
+                (
+                    "Productos con stock bajo",
+                    self._low_stock,
+                    ThemeManager.WARNING_COLOR,
+                ),
+                (
+                    "Productos registrados",
+                    self._products_total,
+                    ThemeManager.SUCCESS_COLOR,
+                ),
+            )
+        ):
+            card = QFrame()
+            card.setObjectName("inventoryStatCard")
+            card.setStyleSheet(
+                f"QFrame#inventoryStatCard {{ background: white; "
+                f"border: 1px solid {ThemeManager.BORDER_COLOR}; border-radius: 10px; }}"
+            )
+            card_layout = QVBoxLayout(card)
+            card_layout.setContentsMargins(16, 14, 16, 14)
+            text = QLabel(label)
+            text.setStyleSheet(f"color: {ThemeManager.TEXT_SECONDARY};")
+            value.setStyleSheet(f"font-size: 22px; font-weight: 700; color: {color};")
+            card_layout.addWidget(text)
+            card_layout.addWidget(value)
+            stats.addWidget(card, 0, column)
+
         self._table = QTableView()
         self._table.setModel(self._proxy_model)
         self._table.setAlternatingRowColors(True)
@@ -65,9 +113,12 @@ class InventoryPage(QWidget):
 
         layout = QVBoxLayout(self)
         layout.setContentsMargins(32, 28, 32, 28)
-        layout.setSpacing(12)
+        layout.setSpacing(14)
         layout.addWidget(title)
         layout.addWidget(subtitle)
+        layout.addSpacing(8)
+        layout.addLayout(stats)
+        layout.addSpacing(4)
         layout.addLayout(toolbar)
         layout.addWidget(self._table, 1)
 

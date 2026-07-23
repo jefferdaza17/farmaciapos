@@ -38,7 +38,9 @@ class ThemeManager:
     TEXT_DISABLED = "#94A3B8"
 
     # Tipografía
-    FONT_FAMILY = "Inter, Segoe UI, Arial"
+    # Segoe UI está disponible en Windows. Inter se puede añadir después como
+    # recurso de la aplicación sin romper la representación de caracteres.
+    FONT_FAMILY = "Segoe UI"
     FONT_SIZE_SMALL = 12
     FONT_SIZE_NORMAL = 13
     FONT_SIZE_LARGE = 16

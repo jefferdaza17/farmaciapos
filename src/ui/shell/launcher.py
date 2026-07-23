@@ -10,7 +10,10 @@ Creado      : 2026-07-21
 ===============================================================================
 """
 
-from PySide6.QtCore import Qt
+from pathlib import Path
+
+from PySide6.QtCore import QSize, Qt
+from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QFrame
 from PySide6.QtWidgets import QPushButton
 from PySide6.QtWidgets import QVBoxLayout
@@ -110,16 +113,20 @@ class Launcher(QFrame):
         """
         for module in self._registry.all():
 
-            icons = {
-                "home": "▦",
-                "inventory": "▣",
-                "sales": "🛒",
-                "clients": "♟",
-                "suppliers": "▤",
-                "purchases": "▧",
-                "reports": "▥",
+            icon_files = {
+                "home": "dashboard.svg",
+                "inventory": "inventory.svg",
+                "sales": "sales.svg",
+                "clients": "clients.svg",
+                "suppliers": "suppliers.svg",
+                "purchases": "purchases.svg",
+                "reports": "reports.svg",
             }
-            button = QPushButton(icons.get(module.id, "•"))
+            button = QPushButton()
+            project_root = Path(__file__).resolve().parents[3]
+            icon_path = project_root / "assets" / "icons" / icon_files[module.id]
+            button.setIcon(QIcon(str(icon_path)))
+            button.setIconSize(QSize(23, 23))
             button.setToolTip(module.title)
             button.setAccessibleName(module.title)
             button.setCursor(Qt.CursorShape.PointingHandCursor)

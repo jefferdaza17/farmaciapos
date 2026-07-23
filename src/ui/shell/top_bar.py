@@ -63,7 +63,15 @@ class TopBar(QFrame):
             }}
             """)
 
-        self._title_label = QLabel("💊  " + self.APP_NAME)
+        self._brand_mark = QLabel("FP")
+        self._brand_mark.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self._brand_mark.setFixedSize(34, 34)
+        self._brand_mark.setStyleSheet(
+            f"background: {ThemeManager.PRIMARY_COLOR}; color: white; "
+            "border-radius: 10px; font-weight: 800; font-size: 12px;"
+        )
+
+        self._title_label = QLabel(self.APP_NAME)
         self._title_label.setStyleSheet(f"""
             QLabel {{
                 color: {ThemeManager.TEXT_PRIMARY};
@@ -79,7 +87,7 @@ class TopBar(QFrame):
         self._search_input.setFixedWidth(280)
         self._search_input.setStyleSheet("padding: 8px 12px;")
 
-        self._version_label = QLabel(self.APP_VERSION + "  •  Sesión activa")
+        self._version_label = QLabel("Sesión activa")
         self._version_label.setAlignment(Qt.AlignCenter)
         self._version_label.setStyleSheet(f"""
             QLabel {{
@@ -97,6 +105,7 @@ class TopBar(QFrame):
         layout.setContentsMargins(24, 0, 28, 0)
         layout.setSpacing(12)
 
+        layout.addWidget(self._brand_mark)
         layout.addWidget(self._title_label)
         layout.addWidget(spacer)
         layout.addWidget(self._search_input)
